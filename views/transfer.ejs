@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FYNZON</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/jquery.js"></script>
+</head>
+
+<body>
+
+    <div class="bg-dark" id="main">
+
+    <!--Header-->
+    <div class="container-fluid d-flex justify-content-center bg-dark">
+        <h1 class="display-3 text-primary font-weight-bold">FYNZON</h1>
+    </div>
+
+
+    
+    <div class="container-fluid d-flex justify-content-center">
+
+        <!--Transfer-->
+        <div class="container d-flex justify-content-center bg-light" id="container1">
+
+            <form class="form-group">
+                
+                <!--enter pin again-->
+                <div class="form-group d-flex justify-content-center">
+                    <input class="form-control" type="password" name="pin" id="pin" placeholder="Enter your 4 digit pin">
+                </div>
+
+                <div class="form-group d-flex justify-content-center">
+                    <p id="demo" class="text-danger font-weight-bold"></p>
+                </div>
+
+                <!--Amount-->
+                <div class="form-group d-flex justify-content-center">
+                    <input class="form-control" type="text" name="amount" id="amount" placeholder="Amount">
+                </div>
+
+                <div class="form-group d-flex justify-content-center">
+                    <input type="hidden" name="phone" id="phone" value="<%=phone%>">
+                    <input type="button" name="submit" id="transfer" class="btn btn-success" value="Transfer"> &nbsp; &nbsp; 
+                    <input type="reset" name="Reset" class="btn btn-warning text-white">
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    </div>
+
+    <!--Script-->
+    <script src="/javascripts/myScript.js"></script>
+    <script>
+        document.getElementById('transfer').addEventListener('click', transferAmount, false);
+
+        function transferAmount() {
+            var pin = document.getElementById('pin').value;
+            var amount = document.getElementById('amount').value;
+            var allset = true;
+            var num_reg = /^[0-9]+$/;
+
+            if (pin.length != 4 || num_reg.test(pin) == false) {
+                allset = false;
+                document.getElementById('demo').innerHTML = 'Please enter a valid 4 digit pin';
+            }
+            else if (amount == '' || num_reg.test(amount) == false) {
+                allset = false;
+                document.getElementById('demo').innerHTML = 'Please enter a valide amount';
+            }
+            else if (allset == true ) {
+                $.post('/transfer/send', {
+                    pin: document.getElementById('pin').value,
+                    phone: document.getElementById('phone').value,
+                    amount: document.getElementById('amount').value
+                },
+                function(res, status) {
+                    if (status == 'success') {
+                        alert(res);
+                    }
+                    else {
+                        alert(res);
+                    }
+                });
+            }
+        }
+    </script>
+
+</body>
+</html>

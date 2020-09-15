@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FYNZON</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/jquery.js"></script>
+</head>
+
+<body>
+
+    <div class="bg-dark" id="main">
+
+        <!--Header-->
+        <div class="container-fluid d-flex justify-content-center bg-dark">
+            <h1 class="display-3 text-primary font-weight-bold">FYNZON</h1>
+        </div>
+
+        <div class="container-fluid d-flex justify-content-center">
+
+            <!--Verfication credentials-->
+            <div class="container d-flex justify-content-center bg-light" id="container1">
+
+                <form action="/mobverifyLogin" method="POST" class="form-group" name="register" onsubmit="return numberValidation(this)">
+                    <div class="form-group d-flex justify-content-center">
+                        <p class="text-primary">Fynzon will send you an OTP to verify the phone number </p>
+                    </div>
+
+                    <div class="form-group d-flex justify-content-center">
+                        <input type="text" class=" text-center form-control" name="phone" placeholder="Mobile Number">
+                    </div>
+
+                    <div class="form-group d-flex justify-content-center">
+                        <input type="submit" name="submit" class="btn btn-success" value="Submit"> &nbsp; &nbsp; 
+                        <input type="reset" name="Reset" class="btn btn-warning text-white">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <!--Script-->
+    <script src="/javascripts/myScript.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FYNZON</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script src="/javascripts/jquery.js"></script>
+</head>
+
+<body>
+
+    <div class="bg-dark" id="main">
+
+    <!--Header-->
+    <div class="container-fluid d-flex justify-content-center bg-dark">
+        <h1 class="display-3 text-primary font-weight-bold">FYNZON</h1>
+    </div>
+
+
+    
+    <div class="container-fluid d-flex justify-content-center">
+
+        <!--Home-->
+        <div class="container d-flex justify-content-center bg-light" id="container1">
+
+            <form class="form-group" action="/transfer" method="POST" onsubmit="return pinValidation(this)">
+                <div class="form-group d-flex justify-content-center">
+                    <p class="text-primary">Welcome <%=fname%> <%=lname%>.</p>
+                </div>
+                
+                <!--enter pin again-->
+                <div class="form-group d-flex justify-content-center">
+                    <input class="form-control" type="password" name="pin" id="pin" placeholder="Enter your 4 digit pin">
+                </div>
+
+                <div class="form-group d-flex justify-content-center">
+                    <p id="demo" class="text-danger font-weight-bold"></p>
+                </div>
+
+                <!--creating wallet-->
+                <div class="form-group d-flex justify-content-center">
+                    <input type="hidden" name="phone" id="phone" value="<%=phone%>">
+                    <input type="button" name="submit" id="submit" class="btn btn-success" value="Create Node"> &nbsp; &nbsp; 
+                    <input type="reset" name="Reset" class="btn btn-warning text-white">
+                </div>
+
+                <!--transfer amount-->
+                <div class="form-group d-flex justify-content-center">
+                    <input type="submit" name="transfer" id="transfer" class="btn btn-primary" value="Transfer Amount"> &nbsp; &nbsp; 
+                </div>
+
+                <!--Balance-->
+                <div class="form-group d-flex justify-content-center">
+                    <input type="button" name="balance" id="balance" class="btn btn-primary" value="Get Balance"> &nbsp; &nbsp; 
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    </div>
+
+    <!--Script-->
+    <script src="/javascripts/myScript.js"></script>
+    <script>
+        document.getElementById('submit').addEventListener('click', createNode, false);
+        document.getElementById('balance').addEventListener('click', getBalance, false);
+
+
+
+        // function for creating the wallet
+        function createNode() {
+            var pin = document.getElementById('pin').value;
+            var num_reg = /^[0-9]+$/;
+
+            if (pin.length != 4 || num_reg.test(pin) == false) {
+                document.getElementById('demo').innerHTML = 'Please enter a valid 4 digit pin';
+            }
+            else if (pin.length == 4 && num_reg.test(pin) == true) {
+                $.post('/createNode', {
+                    pin: document.getElementById('pin').value,
+                    phone: document.getElementById('phone').value
+                },
+                function(res, status) {
+                    if (status == 'success') {
+                        alert(res);
+                    }
+                    else {
+                        alert(res);
+                    }
+                });
+            }
+        }
+
+        // function for show balance
+        function getBalance() {
+
+                $.post('/transfer/balance', {
+                    phone: document.getElementById('phone').value
+                },
+                function(res, status) {
+                    if (status == 'success') {
+                        document.getElementById('demo').innerHTML = res;
+                    }
+                    else {
+                        alert(res);
+                    }
+                });
+        }
+
+    </script>
+
+</body>
+</html>
