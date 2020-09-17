@@ -16,18 +16,16 @@ contract = new web3.eth.Contract(abi, contractAddress);
 
 // routers
 var registerRouter = require('./routes/register');
-var mobverifiedRouter = require('./routes/mobverified');
-var mobverifyRouter = require('./routes/mobverify');
 var loginRouter = require('./routes/login');
-var createNodeRouter = require('./routes/createNode');
-var mobverifiedLoginRouter = require('./routes/mobverifiedLogin');
-var mobverifyLoginRouter = require('./routes/mobverifyLogin');
-var transferRouter = require('./routes/transfer');
+var createBTCNodeRouter = require('./routes/createBTCNode');
+var createETHNodeRouter = require('./routes/createETHNode');
+var clientCurrencyRouter = require('./routes/clientCurrency');
 
 var app = express();
 
 //set up mongo connection
 mongoose.connect('mongodb://localhost:27017/FYNZON');
+//mongoose.connect("mongodb+srv://Zumairaka:parveen00@cluster0-rops0.mongodb.net/FYNZON?retryWrites=true&w=majority");
 mongoose.set('useFindAndModify', false);
 var db=mongoose.connection;
 db.on('error',(error)=>{
@@ -49,13 +47,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //routers
 app.use('/register', registerRouter);
-app.use('/mobverified', mobverifiedRouter);
-app.use('/mobverify', mobverifyRouter);
 app.use('/login', loginRouter);
-app.use('/createNode', createNodeRouter);
-app.use('/mobverifiedLogin', mobverifiedLoginRouter);
-app.use('/mobverifyLogin', mobverifyLoginRouter);
-app.use('/transfer', transferRouter);
+app.use('/createBTCNode', createBTCNodeRouter);
+app.use('/createETHNode', createETHNodeRouter);
+app.use('/clientCurrency', clientCurrencyRouter);
 
 // error handler
 app.use(function (req, res, next) {

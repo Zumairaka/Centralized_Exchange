@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const registerSchema = new mongoose.Schema( {
+const registerSchema = new mongoose.Schema({
         phone: {
             type: Number,
             unique: true,
@@ -20,6 +20,10 @@ const registerSchema = new mongoose.Schema( {
             required: true
         },
         pin: {
+            type: Number,
+            required: true
+        },
+        token: {
             type: String,
             required: true
         }
