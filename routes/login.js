@@ -27,24 +27,26 @@ router.post('/', async function(req, res, next) {
                 // replacing the token at the databse
                 await registerModel.findOneAndUpdate({phone: phone}, {token: jwtToken}, async (error, updateData) => {
 
-                    // updation successful
+                    // login successful
                     if (updateData) {
-                        res.send('Phone number: ' + phoneData.phone + ' Token: ' + jwtToken);
+                        //console.log(updateData);
+                        var resData = {'userid' : updateData._id, 'phone' : updateData.phone, 'token' : updateData.token};
+                        res.json({'message' : 'Login Successful', 'error' : 'false', 'data' : resData});
                     }
                     else if (error) {
-                        res.json({'Status' : 'Token Updation Failed'});
+                        res.json({'message' : 'Token Updation Failed', 'error': 'true', 'data' : 'null'});
                     }
                 });
             }
             else {
-                res.json({'Status' : 'Pin does not match'});
+                res.json({'message' : 'Pin does not match', 'error' : 'true', 'data' : 'null'});
             }
         }
         else if (!phoneData) {
-            res.json({'Status' : 'Phone number does not exist'});
+            res.json({'message' : 'Phone number does not exist', 'error' : 'true', 'data' : 'null'});
         }
         else if (error) {
-            res.json({'Status' : 'Error'});  
+            res.json({'message' : 'Error', 'error' : 'true', 'data' : 'null'});  
         }
     });
 });

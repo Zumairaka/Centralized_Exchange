@@ -14,13 +14,13 @@ router.post('/', async function(req, res, next) {
 
         // phone number not registered
         if(!phoneData) {
-            res.json({'Status': 'Phone number is not registered one'});
+            res.json({'message': 'Phone number is not registered one', 'error' : 'true', 'data' : 'null'});
         }
         // phone number registered
         else if (phoneData) {
             // pin does not match
             if (pin != phoneData.pin) {
-                res.json({'Status': 'Wrong pin'});
+                res.json({'message': 'Wrong pin', 'error' : 'true', 'data' : 'null'});
             }
             // pin matches
             else if (pin == phoneData.pin) {
@@ -32,17 +32,19 @@ router.post('/', async function(req, res, next) {
                 // storing the balance details
                 await clientCurrencyData.save((error, saveData) => {
                     if (error) {
-                        res.json({'Status': 'Error with Updating Balance'});
+                        res.json({'message': 'Error with Updating Balance', 'error' : 'true', 'data' : 'null'});
                     }
                     else if (saveData) {
-                        res.json({'Status': 'Balance Updated Successfully'});
+                        var resData = {'userid' : saveData._id, 'BTCBalance' : saveData.BTCBalance,
+                         'ETHBalance' : saveData.ETHBalance, 'USDBalance' : saveData.USDBalance, 'INRBalance' : saveData.INRBalance};
+                        res.json({'message': 'Balance Updated Successfully', 'error' : 'false', 'data' : resData});
                     }
                 });
             }
         }
         // error finding the phone number
         else if (error) {
-            res.json({'Status': 'Error'});
+            res.json({'message': 'Error', 'error' : 'true', 'data' : 'null'});
         }
     }); 
 });

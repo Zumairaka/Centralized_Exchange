@@ -31,32 +31,35 @@ router.post('/', async function(req, res, next) {
                     // storing the data as new client
                     var regData = { phone: data.phone, fname: data.fname, lname: data.lname, email: data.email, pin: data.pin, token: jwtToken };
                     var clientData = new registerModel(regData);
-                    await clientData.save((error, data) => {
+                    await clientData.save((error, storeData) => {
                         if(error) {
-                            res.json({'Status' : 'Error With Registration'});
+                            res.json({'message' : 'Error With Registration', 'error' : 'true', 'data' : 'null'});
                             throw error;
                         }
+                        // successful
                         else {
-                            res.json({'Status' : 'Successfully Registered'});
+                            //console.log(storeData);
+                            var resData = {'userid': storeData._id, 'phone' : storeData.phone, 'token' : storeData.token};
+                            res.json({'message' : 'Successfully Registered', 'error' : 'false', 'data' : resData});
                         }
                     });
                 }
                 // email exists
                 else if (emailData) {
-                    res.json({'Status' : 'Email Already Exists'});
+                    res.json({'message' : 'Email Already Exists', 'error' : 'true', 'data' : 'null'});
                 }
                 else {
-                    res.json({'Status' : 'Error With Registration'});
+                    res.json({'message' : 'Error With Registration', 'error' : 'true', 'data' : 'null'});
                 }
             });
             
         }
         // phone exists
         else if (phoneData) {
-            res.json({'Status' : 'Phone Number Already Exists'});
+            res.json({'message' : 'Phone Number Already Exists', 'error' : 'true', 'data' : 'null'});
         }
         else {
-            res.json({'Status' : 'Error With Registration'});
+            res.json({'message' : 'Error With Registration', 'error' : 'true', 'data' : 'null'});
         } 
     });
 });

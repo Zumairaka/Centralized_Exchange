@@ -14,13 +14,13 @@ router.post('/', async function(req, res, next) {
 
         // phone number not registered
         if(!phoneData) {
-            res.json({'Status': 'Phone number is not registered one'});
+            res.json({'message': 'Phone number is not registered one', 'error' : 'true', 'data' : 'null'});
         }
         // phone number registered
         else if (phoneData) {
             // pin does not match
             if (pin != phoneData.pin) {
-                res.json({'Status': 'Wrong pin'});
+                res.json({'message': 'Wrong pin', 'error' : 'true', 'data' : 'null'});
             }
             // pin matches
             else if (pin == phoneData.pin) {
@@ -36,17 +36,18 @@ router.post('/', async function(req, res, next) {
                 // storing the account details
                 await clientBTCAccountData.save((error, saveData) => {
                     if (error) {
-                        res.json({'Status': 'Error with Storing the BTC Account Data '});
+                        res.json({'message': 'Error with Storing the BTC Account Data ', 'error' : 'true', 'data' : 'null'});
                     }
                     else if (saveData) {
-                        res.json({'Status': 'Wallet Stored Successfully'});
+                        var resData = {'userid' : saveData._id, 'address' : saveData.address};
+                        res.json({'message': 'Wallet Stored Successfully', 'error' : 'false', 'data' : resData});
                     }
                 });
             }
         }
         // error finding the phone number
         else if (error) {
-            res.json({'Status': 'Error'});
+            res.json({'message': 'Error', 'error' : 'true', 'data' : 'null'});
         }
     }); 
 });
