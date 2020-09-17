@@ -23,8 +23,8 @@ var clientCurrencyRouter = require('./routes/clientCurrency');
 var app = express();
 
 //set up mongo connection
-mongoose.connect('mongodb://localhost:27017/FYNZON');
-//mongoose.connect("mongodb+srv://Zumairaka:parveen00@cluster0-rops0.mongodb.net/FYNZON?retryWrites=true&w=majority");
+//mongoose.connect('mongodb://localhost:27017/FYNZON');
+mongoose.connect("mongodb+srv://Zumairaka:parveen00@cluster0-rops0.mongodb.net/FYNZON?retryWrites=true&w=majority");
 mongoose.set('useFindAndModify', false);
 var db=mongoose.connection;
 db.on('error',(error)=>{
