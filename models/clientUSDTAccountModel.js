@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const clientBTCAccountSchema = new mongoose.Schema({    
+const clientUSDTAccountSchema = new mongoose.Schema({  
 
         privateKey: {
             type: String,
@@ -15,5 +15,5 @@ const clientBTCAccountSchema = new mongoose.Schema({
         
 });
 
-const clientBTCAccountModel = mongoose.model('clientbtcaccount', clientBTCAccountSchema);
-module.exports = {clientBTCAccountModel};
+const clientUSDTAccountModel = mongoose.model('clientustdaccount', clientUSDTAccountSchema);
+module.exports = {clientUSDTAccountModel};

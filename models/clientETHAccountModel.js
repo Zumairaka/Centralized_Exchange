@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const clientETHAccountSchema = new mongoose.Schema({    
+
         privateKey: {
             type: String,
             required: true,
@@ -11,6 +12,7 @@ const clientETHAccountSchema = new mongoose.Schema({
             required: true,
             unique: true
         }
+        
 });
 
 const clientETHAccountModel = mongoose.model('clientethaccount', clientETHAccountSchema);

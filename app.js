@@ -18,7 +18,9 @@ var registerRouter = require('./routes/register');
 var loginRouter = require('./routes/login');
 var createBTCNodeRouter = require('./routes/createBTCNode');
 var createETHNodeRouter = require('./routes/createETHNode');
-var clientCurrencyRouter = require('./routes/clientCurrency');
+var clientBalanceRouter = require('./routes/clientBalance');
+var updateBalanceRouter = require('./routes/updateBalance');
+var getPeersRouter = require('./routes/getPeers');
 
 var app = express();
 
@@ -46,7 +48,9 @@ app.use('/register', registerRouter);
 app.use('/login', loginRouter);
 app.use('/createBTCNode', createBTCNodeRouter);
 app.use('/createETHNode', createETHNodeRouter);
-app.use('/clientCurrency', clientCurrencyRouter);
+app.use('/clientBalance', clientBalanceRouter);
+app.use('/updateBalance', updateBalanceRouter);
+app.use('/getPeers', getPeersRouter);
 
 
 app.listen(process.env.PORT || 3000,function(){

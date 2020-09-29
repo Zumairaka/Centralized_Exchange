@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {clientETHAccountModel} = require('../models/clientETHAccountModel');
+const {clientUSDTAccountModel} = require('../models/clientUSDTAccountModel');
 const {registerModel} = require('../models/registerModel');
 
 // creating wallet for the client
@@ -26,7 +26,7 @@ router.post('/', async function(req, res, next) {
             else if (pin == phoneData.pin) {
 
                 // check already created a node
-                await clientETHAccountModel.findOne({_id: phoneData._id}, async function(error, accountData) {
+                await clientUSDTAccountModel.findOne({_id: phoneData._id}, async function(error, accountData) {
                     // exists
                     if (accountData) {
                         res.json({'message' : 'Account already exists', 'error' : 'true', 'data' : accountData.address});
@@ -38,12 +38,12 @@ router.post('/', async function(req, res, next) {
                         //var keystore = await web3.eth.accounts.encrypt(keygenerator.privateKey, pin);
                         //console.log(keystore);
         
-                        var clientETHAccount = {_id: phoneData._id, privateKey: keygenerator.privateKey, address: keygenerator.address};
-                        var clientETHAccountData = new clientETHAccountModel(clientETHAccount);
-                        //console.log (clientETHAccountData);
+                        var clientUSDTAccount = {_id: phoneData._id, privateKey: keygenerator.privateKey, address: keygenerator.address};
+                        var clientUSDTAccountData = new clientUSDTAccountModel(clientUSDTAccount);
+                        //console.log (clientUSDTAccountData);
         
                         // storing the account details
-                        await clientETHAccountData.save((error, saveData) => {
+                        await clientUSDTAccountData.save((error, saveData) => {
                             if (error) {
                                 res.json({'message': 'Error with Storing the ETH Account Data ', 'error' : 'true', 'data' : 'null'});
                             }

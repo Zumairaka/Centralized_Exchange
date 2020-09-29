@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {clientCurrencyModel} = require('../models/clientCurrencyModel');
+const {clientBalanceModel} = require('../models/clientBalanceModel');
 const {registerModel} = require('../models/registerModel');
 
 // creating wallet for the client
@@ -24,20 +24,18 @@ router.post('/', async function(req, res, next) {
             }
             // pin matches
             else if (pin == phoneData.pin) {
-                // storing the balance
-                var clientCurrency = {_id: phoneData._id, BTCBalance: 0, ETHBalance: 0, USDBalance: 0, INRBalance: 0};
-                var clientCurrencyData = new clientCurrencyModel(clientCurrency);
+                // initializing the balance
+                var clientBalance = {_id: phoneData._id, BTCBalance: 0, ETHBalance: 0, USDTBalance: 0, INRBalance: 0, BCHBalance: 0, CRMTBalance: 0};
+                var clientBalanceData = new clientBalanceModel(clientBalance);
                 //console.log (clientCurrencyData);
 
                 // storing the balance details
-                await clientCurrencyData.save((error, saveData) => {
+                await clientBalanceData.save((error, saveData) => {
                     if (error) {
                         res.json({'message': 'Error with Updating Balance', 'error' : 'true', 'data' : 'null'});
                     }
                     else if (saveData) {
-                        var resData = {'userid' : saveData._id, 'BTCBalance' : saveData.BTCBalance,
-                         'ETHBalance' : saveData.ETHBalance, 'USDBalance' : saveData.USDBalance, 'INRBalance' : saveData.INRBalance};
-                        res.json({'message': 'Balance Updated Successfully', 'error' : 'false', 'data' : resData});
+                        res.json({'message': 'Balance Updated Successfully', 'error' : 'false', 'data' : saveData});
                     }
                 });
             }
@@ -47,6 +45,20 @@ router.post('/', async function(req, res, next) {
             res.json({'message': 'Error', 'error' : 'true', 'data' : 'null'});
         }
     }); 
+});
+
+
+// get Balance
+router.post('/getBalance', async function(req, res, next) {
+    var _id = req.body.userid;
+    await clientBalanceModel.findOne({_id: _id}, async (error, balanceData) => {
+        if (error) {
+            res.json({'message' : 'Error', 'error' : 'true', 'data' : 'null'});
+        }
+        else if (balanceData) {
+            res.json({'message' : 'Your Balance', 'error' : 'false', 'data' : balanceData});
+        }
+    });
 });
 
 module.exports = router;

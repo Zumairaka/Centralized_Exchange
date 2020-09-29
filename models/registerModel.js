@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const registerSchema = new mongoose.Schema({
+
         phone: {
             type: Number,
             unique: true,
@@ -27,6 +28,7 @@ const registerSchema = new mongoose.Schema({
             type: String,
             required: true
         }
+        
 });
 
 const registerModel = mongoose.model('client', registerSchema);
