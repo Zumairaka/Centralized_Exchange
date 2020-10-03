@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const orderBookSchema = new mongoose.Schema({
+
+        userid: {
+            type: String,
+            required: true
+        },
         baseCurrency : {
             type: String,
             required: true

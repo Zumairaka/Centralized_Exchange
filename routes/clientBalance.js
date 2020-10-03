@@ -30,12 +30,12 @@ router.post('/', async function(req, res, next) {
                 //console.log (clientCurrencyData);
 
                 // storing the balance details
-                await clientBalanceData.save((error, saveData) => {
+                await clientBalanceData.save((error, balanceData) => {
                     if (error) {
                         res.json({'message': 'Error with Updating Balance', 'error' : 'true', 'data' : 'null'});
                     }
-                    else if (saveData) {
-                        res.json({'message': 'Balance Updated Successfully', 'error' : 'false', 'data' : saveData});
+                    else if (balanceData) {
+                        res.json({'message': 'Balance Updated Successfully', 'error' : 'false', 'data' : balanceData});
                     }
                 });
             }
