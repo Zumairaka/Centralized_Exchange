@@ -21,7 +21,6 @@ var createETHNodeRouter = require('./routes/createETHNode');
 var clientBalanceRouter = require('./routes/clientBalance');
 var updateBalanceRouter = require('./routes/updateBalance');
 var getPeersRouter = require('./routes/getPeers');
-var getPeerTestRouter = require('./routes/getPeerTest');
 
 var app = express();
 
@@ -52,7 +51,6 @@ app.use('/createETHNode', createETHNodeRouter);
 app.use('/clientBalance', clientBalanceRouter);
 app.use('/updateBalance', updateBalanceRouter);
 app.use('/getPeers', getPeersRouter);
-app.use('/getPeerTest', getPeerTestRouter);
 
 
 
