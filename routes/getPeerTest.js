@@ -179,9 +179,6 @@ router.post('/', async function (req, res, next) {
                                                                 }
                                                                 // buyer balance retreived
                                                                 else if (takerBalance) {
-
-
-
                                                                     // retrieve taker trading currency balance
                                                                     switch (data.tradingCurrency) {
                                                                         case 'BTC': var takerTradeCurrencyBalance = takerBalance.BTCBalance;
@@ -197,12 +194,6 @@ router.post('/', async function (req, res, next) {
                                                                         case 'INR': var takerTradeCurrencyBalance = takerBalance.INRBalance;
                                                                             break;
                                                                     }
-
-
-
-
-
-
                                                                     // condition 1 maker taker equal volume
                                                                     if (makerData.volume == takerData[i].volume) {
 
@@ -256,10 +247,6 @@ router.post('/', async function (req, res, next) {
                                                                                 await clientBalanceModel.findByIdAndUpdate(companyId, companyUpdateBalance, async (error, companyTradeCurrBalData) => {
                                                                                     if (error) {
                                                                                         // error with updating company trade currency balance. Revert taker balances and go to next buyer
-
-
-
-
                                                                                         // revert taker balance
                                                                                         takerTradeCurrencyBalance -= (makerData.volume - makerTransactionFee);
                                                                                         // update balance taker
@@ -318,9 +305,6 @@ router.post('/', async function (req, res, next) {
                                                                                         await clientBalanceModel.findByIdAndUpdate(makerData.userid, makerUpdateBalance, async (error, makerBaseCurrBalData) => {
                                                                                             if (error) {
                                                                                                 // error with updating company maker base currency balance. Revert taker and company trade currency balances and try after sometime
-
-
-
                                                                                                 // revert taker balance
                                                                                                 takerTradeCurrencyBalance -= (makerData.volume - makerTransactionFee);
                                                                                                 // update balance taker
@@ -376,7 +360,6 @@ router.post('/', async function (req, res, next) {
                                                                                             }
                                                                                             // successfully updated maker base currency balance
                                                                                             else if (makerBaseCurrBalData) {
-
 
                                                                                                 // update balance of company
                                                                                                 switch (data.baseCurrency) {
@@ -465,21 +448,14 @@ router.post('/', async function (req, res, next) {
                                                                                                                                 res.json({ 'message': 'Error with reverting maker base balance, transaction failed, try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                                             }
                                                                                                                             else {
-
-
-
                                                                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                                                 step(++i);
-
-
                                                                                                                             }
                                                                                                                         });
                                                                                                                     }
                                                                                                                 });
                                                                                                             }
                                                                                                         });
-
-
                                                                                                     }
                                                                                                     // successfully updated company base currency balance
                                                                                                     else if (companyBaseCurrBalData) {
@@ -538,10 +514,6 @@ router.post('/', async function (req, res, next) {
                                                                     }
                                                                     // condition 2 maker volume is greater than taker volume
                                                                     else if (makerData.volume > takerData[i].volume) {
-
-
-
-
                                                                         // calculate transaction fee from maker balance
                                                                         var makerTransactionFee = (takerData[i].volume * 1.5) / 100;
                                                                         companyTradeCurrencyBalance += makerTransactionFee;
@@ -567,10 +539,8 @@ router.post('/', async function (req, res, next) {
                                                                         await clientBalanceModel.findByIdAndUpdate(takerData[i].userid, takerUpdateBalance, async (error, takerTradeCurrBalData) => {
                                                                             if (error) {
                                                                                 // error with updating taker data, go to next buyer
-
                                                                                 companyTradeCurrencyBalance -= makerTransactionFee;
                                                                                 step(++i);
-
                                                                             }
                                                                             // successfully updated taker trade balance
                                                                             else if (takerTradeCurrBalData) {
@@ -593,8 +563,6 @@ router.post('/', async function (req, res, next) {
                                                                                 await clientBalanceModel.findByIdAndUpdate(companyId, companyUpdateBalance, async (error, companyTradeCurrBalData) => {
                                                                                     if (error) {
                                                                                         // error with updating company trade balance. Revert taker balances and go to next buyer
-
-
                                                                                         // revert taker balance                                                                                                            
                                                                                         takerTradeCurrencyBalance -= (takerData[i].volume - makerTransactionFee);
                                                                                         // update balance taker
@@ -621,8 +589,6 @@ router.post('/', async function (req, res, next) {
                                                                                                 step(++i);
                                                                                             }
                                                                                         });
-
-
                                                                                     }
                                                                                     // successfully updated compnay trade currency balance
                                                                                     else if (companyTradeCurrBalData) {
@@ -653,8 +619,6 @@ router.post('/', async function (req, res, next) {
                                                                                         await clientBalanceModel.findByIdAndUpdate(makerData.userid, makerUpdateBalance, async (error, makerBaseCurrBalData) => {
                                                                                             if (error) {
                                                                                                 // error with updating maker base balance. Revert taker and company trade balances and try after sometime
-
-
                                                                                                 // revert taker balance
                                                                                                 takerTradeCurrencyBalance -= (takerData[i].volume - makerTransactionFee);
                                                                                                 // update balance taker
@@ -705,15 +669,9 @@ router.post('/', async function (req, res, next) {
 
                                                                                                     }
                                                                                                 });
-
-
                                                                                             }
                                                                                             // successfully updated maker base balance
                                                                                             else if (makerBaseCurrBalData) {
-
-
-
-
                                                                                                 // update balance of company
                                                                                                 switch (data.baseCurrency) {
                                                                                                     case 'BTC': var companyUpdateBalance = { BTCBalance: companyBaseCurrencyBalance };
@@ -734,8 +692,6 @@ router.post('/', async function (req, res, next) {
                                                                                                 await clientBalanceModel.findByIdAndUpdate(companyId, companyUpdateBalance, async (error, companyBaseCurrBalData) => {
                                                                                                     if (error) {
                                                                                                         // revert taker, company trade balances and maker, taker base balance and go to next buyer
-
-
                                                                                                         // revert taker balance
                                                                                                         takerTradeCurrencyBalance -= (takerData[i].volume - makerTransactionFee);
                                                                                                         // update balance taker
@@ -802,20 +758,14 @@ router.post('/', async function (req, res, next) {
                                                                                                                                 res.json({ 'message': 'Error with reverting maker base balance, transaction failed, try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                                             }
                                                                                                                             else {
-
-
                                                                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                                                 step(++i);
-
-
                                                                                                                             }
                                                                                                                         });
                                                                                                                     }
                                                                                                                 });
                                                                                                             }
                                                                                                         });
-
-
                                                                                                     }
                                                                                                     // successfully updated company base currency balance
                                                                                                     else if (companyBaseCurrBalData) {
@@ -874,9 +824,6 @@ router.post('/', async function (req, res, next) {
                                                                     }
                                                                     // condition 3 maker volume is less than taker volume
                                                                     else if (makerData.volume < takerData[i].volume) {
-
-
-
                                                                         // calculate transaction fee from maker balance
                                                                         var makerTransactionFee = (makerData.volume * 1.5) / 100;
                                                                         companyTradeCurrencyBalance += makerTransactionFee;
@@ -901,11 +848,8 @@ router.post('/', async function (req, res, next) {
                                                                         await clientBalanceModel.findByIdAndUpdate(takerData[i].userid, takerUpdateBalance, async (error, takerTradeCurrBalData) => {
                                                                             if (error) {
                                                                                 // error with updating taker data, go to next buyer
-
-
                                                                                 companyTradeCurrencyBalance -= makerTransactionFee;
                                                                                 step(++i);
-
                                                                             }
                                                                             // successfully updated taker trade balance
                                                                             else if (takerTradeCurrBalData) {
@@ -927,8 +871,6 @@ router.post('/', async function (req, res, next) {
                                                                                 // update trade balance of company
                                                                                 await clientBalanceModel.findByIdAndUpdate(companyId, companyUpdateBalance, async (error, companyTradeCurrBalData) => {
                                                                                     if (error) {
-
-
                                                                                         // revert taker balance
                                                                                         takerTradeCurrencyBalance -= (makerData.volume - makerTransactionFee);
                                                                                         // update balance taker
@@ -955,8 +897,6 @@ router.post('/', async function (req, res, next) {
                                                                                                 step(++i);
                                                                                             }
                                                                                         });
-
-
                                                                                     }
                                                                                     // successfully updated compnay trade balance
                                                                                     else if (companyTradeCurrBalData) {
@@ -985,8 +925,6 @@ router.post('/', async function (req, res, next) {
                                                                                         await clientBalanceModel.findByIdAndUpdate(makerData.userid, makerUpdateBalance, async (error, makerBaseCurrBalData) => {
                                                                                             if (error) {
                                                                                                 // error with updating maker base balance. Revert taker and company trade balances and try after sometime
-
-
                                                                                                 // revert taker balance
                                                                                                 takerTradeCurrencyBalance -= (makerData.volume - makerTransactionFee);
                                                                                                 // update balance taker
@@ -1037,13 +975,9 @@ router.post('/', async function (req, res, next) {
 
                                                                                                     }
                                                                                                 });
-
-
                                                                                             }
                                                                                             // successfully updated maker base balance
                                                                                             else if (makerBaseCurrBalData) {
-
-
                                                                                                 // update balance of company
                                                                                                 switch (data.baseCurrency) {
                                                                                                     case 'BTC': var companyUpdateBalance = { BTCBalance: companyBaseCurrencyBalance };
@@ -1063,8 +997,6 @@ router.post('/', async function (req, res, next) {
                                                                                                 await clientBalanceModel.findByIdAndUpdate(companyId, companyUpdateBalance, async (error, companyBaseCurrBalData) => {
                                                                                                     if (error) {
                                                                                                         // revert taker, company trade balances and maker base balance and go to next buyer
-
-
                                                                                                         // revert taker balance
                                                                                                         takerTradeCurrencyBalance -= (makerData.volume - makerTransactionFee);
                                                                                                         switch (data.tradingCurrency) {
@@ -1130,20 +1062,14 @@ router.post('/', async function (req, res, next) {
                                                                                                                                 res.json({ 'message': 'Error with reverting maker base balance, transaction failed, try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                                             }
                                                                                                                             else {
-
-
                                                                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                                                 step(++i);
-
-
                                                                                                                             }
                                                                                                                         });
                                                                                                                     }
                                                                                                                 });
                                                                                                             }
                                                                                                         });
-
-
                                                                                                     }
                                                                                                     // successfully updated company ETH balance
                                                                                                     else if (companyBaseCurrBalData) {
@@ -1308,8 +1234,6 @@ router.post('/', async function (req, res, next) {
                                     res.json({ 'message': 'Error locking the base currency value of taker', 'error': 'true', 'data': 'null' });
                                 }
                                 else {
-
-
                                     // saving taker data
                                     await takerDataValues.save(async (error, saveData) => {
                                         if (error) {
@@ -1364,20 +1288,8 @@ router.post('/', async function (req, res, next) {
                                                                         case 'INR': var makerBaseCurrencyBalance = makerBalance.INRBalance;
                                                                             break;
                                                                     }
-
-
-
-
-
-
-
-
                                                                     // condition 1 maker taker equal volume
                                                                     if (takerData.volume == makerData[i].volume) {
-
-
-
-
                                                                         // calculate transaction fee from taker balance
                                                                         var takerTransactionFee = (takerData.price * takerData.volume * 1.5) / 100;
                                                                         companyBaseCurrencyBalance += takerTransactionFee;
@@ -1402,14 +1314,8 @@ router.post('/', async function (req, res, next) {
                                                                         await clientBalanceModel.findByIdAndUpdate(makerData[i].userid, makerUpdateBalance, async (error, takerTradeCurrBalData) => {
                                                                             if (error) {
                                                                                 // error with updating maker data, go to next seller
-
-
-
-
                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                 step(++i);
-
-
                                                                             }
                                                                             // successfully updated maker base currency balance
                                                                             else if (takerTradeCurrBalData) {
@@ -1433,8 +1339,6 @@ router.post('/', async function (req, res, next) {
                                                                                 await clientBalanceModel.findByIdAndUpdate(companyId, companyUpdateBalance, async (error, companyTradeCurrBalData) => {
                                                                                     if (error) {
                                                                                         // error with updating company base currency balance. Revert maker balances and go to next seller
-
-
                                                                                         // revert maker balance
                                                                                         makerBaseCurrencyBalance -= ((takerData.volume * takerData.price) - takerTransactionFee);
 
@@ -1463,8 +1367,6 @@ router.post('/', async function (req, res, next) {
                                                                                                 step(++i);
                                                                                             }
                                                                                         });
-
-
                                                                                     }
                                                                                     // successfully updated compnay base currency balance
                                                                                     else if (companyTradeCurrBalData) {
@@ -1477,11 +1379,7 @@ router.post('/', async function (req, res, next) {
                                                                                         await clientBalanceModel.findByIdAndUpdate(makerData[i].userid, makerUpdateBalance, async (error, makerBaseCurrBalData) => {
                                                                                             if (error) {
                                                                                                 // error with updating maker trade currency balance. Revert maker and company base currency balances and try after sometime
-
-
-
                                                                                                 // revert maker base balance
-
                                                                                                 makerBaseCurrencyBalance -= ((takerData.volume * takerData.price) - takerTransactionFee);
 
                                                                                                 // update base balance maker
@@ -1539,7 +1437,6 @@ router.post('/', async function (req, res, next) {
                                                                                             else if (makerBaseCurrBalData) {
                                                                                                 // update taker trade balance
                                                                                                 takerTradeCurrencyBalance += (makerData[i].volume - makerTransactionFee);
-
                                                                                                 // update balance taker
                                                                                                 switch (data.tradingCurrency) {
                                                                                                     case 'BTC': var takerUpdateBalance = { BTCBalance: takerTradeCurrencyBalance };
@@ -1580,8 +1477,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                 res.json({ 'message': 'Error with reverting base balance of maker, transaction failed try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                             }
                                                                                                             else {
-
-
                                                                                                                 // revert company taker transaction fee
                                                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                                 // update balance of company
@@ -1604,17 +1499,10 @@ router.post('/', async function (req, res, next) {
                                                                                                                         res.json({ 'message': 'Error with reverting company base balance, transaction failed', 'error': 'true', 'data': 'null' });
                                                                                                                     }
                                                                                                                     else {
-
-
                                                                                                                         companyTradeCurrencyBalance -= makerTransactionFee;
                                                                                                                         step(++i);
-
-
                                                                                                                     }
                                                                                                                 });
-
-
-
                                                                                                             }
                                                                                                         });
                                                                                                     }
@@ -1661,8 +1549,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                         res.json({ 'message': 'Error with reverting base currency balance of maker, transaction failed try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                                     }
                                                                                                                     else {
-
-
                                                                                                                         // revert company taker transaction fee
                                                                                                                         companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                                         // update balance of company
@@ -1685,8 +1571,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                                 res.json({ 'message': 'Error with reverting company base balance, transaction failed', 'error': 'true', 'data': 'null' });
                                                                                                                             }
                                                                                                                             else {
-
-
                                                                                                                                 // revert taker trade currency balance
                                                                                                                                 takerTradeCurrencyBalance -= (makerData[i].volume - makerTransactionFee);
 
@@ -1714,8 +1598,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                                         step(++i);
                                                                                                                                     }
                                                                                                                                 });
-
-
                                                                                                                             }
                                                                                                                         });
 
@@ -1780,10 +1662,6 @@ router.post('/', async function (req, res, next) {
                                                                     }
                                                                     // condition 2 taker volume is less than maker volume
                                                                     else if (takerData.volume < makerData[i].volume) {
-
-
-
-
                                                                         // calculate transaction fee from taker balance
                                                                         var takerTransactionFee = (takerData.price * takerData.volume * 1.5) / 100;
                                                                         companyBaseCurrencyBalance += takerTransactionFee;
@@ -1809,13 +1687,8 @@ router.post('/', async function (req, res, next) {
                                                                         await clientBalanceModel.findByIdAndUpdate(makerData[i].userid, makerUpdateBalance, async (error, takerTradeCurrBalData) => {
                                                                             if (error) {
                                                                                 // error with updating maker data, go to next seller
-
-
-
                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                 step(++i);
-
-
                                                                             }
                                                                             // successfully updated maker base currency balance
                                                                             else if (takerTradeCurrBalData) {
@@ -1839,8 +1712,6 @@ router.post('/', async function (req, res, next) {
                                                                                 await clientBalanceModel.findByIdAndUpdate(companyId, companyUpdateBalance, async (error, companyTradeCurrBalData) => {
                                                                                     if (error) {
                                                                                         // error with updating company base currency balance. Revert maker balance and go to next seller
-
-
                                                                                         // revert maker balance
                                                                                         makerBaseCurrencyBalance -= ((takerData.volume * takerData.price) - takerTransactionFee);
 
@@ -1878,9 +1749,6 @@ router.post('/', async function (req, res, next) {
                                                                                         // transaction fee from maker balance
                                                                                         var makerTransactionFee = (takerData.volume * 1.5) / 100;
                                                                                         companyTradeCurrencyBalance += makerTransactionFee;
-
-
-
                                                                                         // update taker trade balance
                                                                                         takerTradeCurrencyBalance += (takerData.volume - makerTransactionFee);
 
@@ -1924,8 +1792,6 @@ router.post('/', async function (req, res, next) {
                                                                                                         res.json({ 'message': 'Error with reverting base balance of maker, transaction failed try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                     }
                                                                                                     else {
-
-
                                                                                                         // revert company taker transaction fee
                                                                                                         companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                         // update balance of company
@@ -1948,12 +1814,8 @@ router.post('/', async function (req, res, next) {
                                                                                                                 res.json({ 'message': 'Error with reverting company base balance, transaction failed', 'error': 'true', 'data': 'null' });
                                                                                                             }
                                                                                                             else {
-
-
                                                                                                                 companyTradeCurrencyBalance -= makerTransactionFee;
                                                                                                                 step(++i);
-
-
                                                                                                             }
                                                                                                         });
 
@@ -2005,8 +1867,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                 res.json({ 'message': 'Error with reverting base currency balance of maker, transaction failed try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                             }
                                                                                                             else {
-
-
                                                                                                                 // revert company taker transaction fee
                                                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                                 // update balance of company
@@ -2029,8 +1889,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                         res.json({ 'message': 'Error with reverting company base balance, transaction failed', 'error': 'true', 'data': 'null' });
                                                                                                                     }
                                                                                                                     else {
-
-
                                                                                                                         // revert taker trade currency balance
                                                                                                                         takerTradeCurrencyBalance -= (takerData.volume - makerTransactionFee);
 
@@ -2124,10 +1982,6 @@ router.post('/', async function (req, res, next) {
                                                                     }
                                                                     // condition 3 taker volume is greater than maker volume
                                                                     else if (takerData.volume > makerData[i].volume) {
-
-
-
-
                                                                         // calculate transaction fee from taker balance
                                                                         var takerTransactionFee = (takerData.price * makerData[i].volume * 1.5) / 100;
                                                                         companyBaseCurrencyBalance += takerTransactionFee;
@@ -2152,12 +2006,8 @@ router.post('/', async function (req, res, next) {
                                                                         await clientBalanceModel.findByIdAndUpdate(makerData[i].userid, makerUpdateBalance, async (error, takerTradeCurrBalData) => {
                                                                             if (error) {
                                                                                 // error with updating maker data, go to next seller
-
-
-
                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                 step(++i);
-
                                                                             }
                                                                             // successfully updated maker base currency balance
                                                                             else if (takerTradeCurrBalData) {
@@ -2181,8 +2031,6 @@ router.post('/', async function (req, res, next) {
                                                                                 await clientBalanceModel.findByIdAndUpdate(companyId, companyUpdateBalance, async (error, companyTradeCurrBalData) => {
                                                                                     if (error) {
                                                                                         // error with updating company base currency balance. Revert maker balances and go to next seller
-
-
                                                                                         // revert maker balance
                                                                                         makerBaseCurrencyBalance -= ((makerData[i].volume * takerData.price) - takerTransactionFee);
 
@@ -2220,8 +2068,6 @@ router.post('/', async function (req, res, next) {
                                                                                         // transaction fee from maker balance
                                                                                         var makerTransactionFee = (makerData[i].volume * 1.5) / 100;
                                                                                         companyTradeCurrencyBalance += makerTransactionFee;
-
-
 
                                                                                         // update taker trade balance
                                                                                         takerTradeCurrencyBalance += (makerData[i].volume - makerTransactionFee);
@@ -2266,8 +2112,6 @@ router.post('/', async function (req, res, next) {
                                                                                                         res.json({ 'message': 'Error with reverting base balance of maker, transaction failed try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                     }
                                                                                                     else {
-
-
                                                                                                         // revert company taker transaction fee
                                                                                                         companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                         // update balance of company
@@ -2290,16 +2134,10 @@ router.post('/', async function (req, res, next) {
                                                                                                                 res.json({ 'message': 'Error with reverting company base balance, transaction failed', 'error': 'true', 'data': 'null' });
                                                                                                             }
                                                                                                             else {
-
-
                                                                                                                 companyTradeCurrencyBalance -= makerTransactionFee;
                                                                                                                 step(++i);
-
                                                                                                             }
                                                                                                         });
-
-
-
                                                                                                     }
                                                                                                 });
                                                                                             }
@@ -2346,8 +2184,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                 res.json({ 'message': 'Error with reverting base currency balance of maker, transaction failed try after sometime', 'error': 'true', 'data': 'null' });
                                                                                                             }
                                                                                                             else {
-
-
                                                                                                                 // revert company taker transaction fee
                                                                                                                 companyBaseCurrencyBalance -= takerTransactionFee;
                                                                                                                 // update balance of company
@@ -2370,8 +2206,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                         res.json({ 'message': 'Error with reverting company base balance, transaction failed', 'error': 'true', 'data': 'null' });
                                                                                                                     }
                                                                                                                     else {
-
-
                                                                                                                         // revert taker trade currency balance
                                                                                                                         takerTradeCurrencyBalance -= (makerData[i].volume - makerTransactionFee);
 
@@ -2399,7 +2233,6 @@ router.post('/', async function (req, res, next) {
                                                                                                                                 step(++i);
                                                                                                                             }
                                                                                                                         });
-
 
                                                                                                                     }
                                                                                                                 });
